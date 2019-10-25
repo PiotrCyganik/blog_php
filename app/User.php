@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property mixed profiles
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -37,9 +40,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+    static::created(function ($user){
+        $user->profiles()->create([
+            'title' => $user->username,
+        ]);
+    });
+
+    }
+
     public function posts()
     {
         return $this->hasMany( Post::class)-> orderBy('created_at', 'DESC');
+    }
+
+    public function following(){
+
+        return $this->belongsToMany(Profiles::class);
     }
 
     public function profiles()

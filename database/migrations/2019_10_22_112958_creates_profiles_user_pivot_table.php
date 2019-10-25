@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class CreatesProfilesUserPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,11 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('profiles_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->text('description')->nullable();
-            $table->string('title')->nullable();
-            $table->string('url')->nullable();
-            $table->string('image')->nullable();
+            $table->unsignedBigInteger('profiles_id');
+            $table->unsignedBigInteger('users_id');
             $table->timestamps();
-
-            $table->index('user_id');
         });
     }
 
@@ -33,6 +28,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('profiles_user');
     }
 }
